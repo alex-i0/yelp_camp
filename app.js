@@ -17,8 +17,9 @@ const campgroundRoutes = require('./routes/campgrounds');
 const commentRoutes = require('./routes/comments');
 const indexRoutes = require('./routes/index');
 
-//mongoose.connect('mongodb://localhost/yelp_camp');
-mongoose.connect('mongodb://admin:admin@ds219000.mlab.com:19000/yelpcamp_alex');
+
+mongoose.connect(process.env.DATABASEURL);
+//mongoose.connect('mongodb://admin:admin@ds219000.mlab.com:19000/yelpcamp_alex');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set('view engine', 'ejs');
