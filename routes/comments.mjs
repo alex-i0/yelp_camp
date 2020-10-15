@@ -10,7 +10,7 @@ const router = express.Router({ mergeParams: true });
 router.get('/new', middleware.isLoggedIn, (req, res) => {
     Campground.findById(req.params.id, (err, campground) => {
         if (err) {
-            console.log(err);
+            console.error(err);
         } else {
             res.render('comments/new', { campground: campground });
         }

@@ -10,8 +10,6 @@ import { fileURLToPath } from 'url';
 import session from 'express-session';
 
 import User from './models/user.mjs';
-import Campground from './models/campground.mjs';
-import Comment from './models/comment.mjs';
 import seedDB from './seeds.mjs';
 import log from './utils/log.mjs';
 

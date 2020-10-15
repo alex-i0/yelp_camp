@@ -16,15 +16,13 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', middleware.isLoggedIn, (req, res) => {
-    let name = req.body.name;
-    let image = req.body.image;
-    let description = req.body.description;
-    let price = req.body.price;
-    let author = {
+    const { name, image, description, price } = req.body;
+    const author = {
         id: req.user._id,
         username: req.user.username
     };
-    let newCampground = { name: name, image: image, description: description, price: price, author: author };
+
+    let newCampground = { name, image, description, price, author };
 
     Campground.create(newCampground, (err, newlyCreated) => {
         if (err) {

@@ -9,4 +9,4 @@ To run application:
 3. mongod (mongo demon)
 4. node app.js
 
-*node.js and mongoDb are require to run application
+\*node.js and mongoDb are require to run application
