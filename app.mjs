@@ -22,15 +22,15 @@ const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const url = process.env.DATABASEURL || 'mongodb://localhost/yelp_camp';
-mongoose.connect(url);
-//mongoose.connect('mongodb://admin:admin@ds219000.mlab.com:19000/yelpcamp_alex');
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
+//mongoose.connect('mongodb://admin:admin@ds219000.mlab.com:19000/KanataCamp_alex');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
 app.use(flash());
-// seedDB(); seed the database
+//seedDB(); seed the database
 
 //PASSPORT CONFIGURATION
 app.use(

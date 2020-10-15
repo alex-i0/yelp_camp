@@ -12,25 +12,25 @@ const seedDB = () => {
         log('Campgrounds have been removed successfully.', 'success');
     });
     //Add campgrounds from defined data
-    seedData.forEach((seed) => {
-        Campground.create(seed, (campgroundError, campground) => {
-            if (campgroundError) {
-                log(campgroundError, 'error');
-            } else {
-                log('Campground has been added successfully.', 'success');
+    // seedData.forEach((seed) => {
+    //     Campground.create(seed, (campgroundError, campground) => {
+    //         if (campgroundError) {
+    //             log(campgroundError, 'error');
+    //         } else {
+    //             log('Campground has been added successfully.', 'success');
 
-                try {
-                    Comment.create({ text: 'This place is great', author: 'Homer' }, (err, comment) => {
-                        campground.comments.push(comment);
-                        campground.save();
-                        log('New comment has been added successfully.', 'success');
-                    });
-                } catch (err) {
-                    log(`Adding comment has failed with error: ${err}`, 'error');
-                }
-            }
-        });
-    });
+    //             try {
+    //                 Comment.create({ text: 'This place is great', author: 'Homer' }, (err, comment) => {
+    //                     campground.comments.push(comment);
+    //                     campground.save();
+    //                     log('New comment has been added successfully.', 'success');
+    //                 });
+    //             } catch (err) {
+    //                 log(`Adding comment has failed with error: ${err}`, 'error');
+    //             }
+    //         }
+    //     });
+    // });
 };
 
 export default seedDB;

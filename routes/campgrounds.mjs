@@ -73,7 +73,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', middleware.checkCampgroundOwnership, (req, res) => {
     Campground.findByIdAndRemove(req.params.id, (err) => {
         if (err) {
-            log(err, 'error');
+            log('Campground not found', 'error');
             res.redirect('/campgrounds');
         } else {
             res.redirect('/campgrounds');
