@@ -5,11 +5,9 @@ import User from '../models/user.mjs';
 const router = express.Router();
 
 //Root Route
-router.get('/', function (req, res) {
+router.get('/', (req, res) => {
     res.render('landing');
 });
-
-//==================AUTH ROUTES
 
 //Show Register Route
 router.get('/register', (req, res) => {
@@ -18,7 +16,7 @@ router.get('/register', (req, res) => {
 
 //Handle Sign Up Logic
 router.post('/register', (req, res) => {
-    let newUser = new User({ username: req.body.username });
+    const newUser = new User({ username: req.body.username });
     User.register(newUser, req.body.password, (err, user) => {
         if (err) {
             req.flash('error', err.message);

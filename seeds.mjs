@@ -1,32 +1,33 @@
 import Campground from './models/campground.mjs';
 import Comment from './models/comment.mjs';
 import seedData from './data/seedData.mjs';
+import log from './utils/log.mjs';
 
 const seedDB = () => {
-    //Remove all campgrounds
+    //Remove all existing campgrounds from database
     Campground.remove({}, (err) => {
         if (err) {
-            console.log(err);
+            log(err, 'error');
         }
-        console.log('removed campgrounds!');
+        log('Campgrounds have been removed successfully.', 'success');
     });
-    //Add a few campgrounds
+    //Add campgrounds from defined data
     seedData.forEach((seed) => {
         Campground.create(seed, (campgroundError, campground) => {
             if (campgroundError) {
-                console.log(campgroundError);
+                log(campgroundError, 'error');
             } else {
-                console.log('added a campground');
+                log('Campground has been added successfully.', 'success');
 
-                Comment.create({ text: 'This place is great', author: 'Homer' }, (err, comment) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
+                try {
+                    Comment.create({ text: 'This place is great', author: 'Homer' }, (err, comment) => {
                         campground.comments.push(comment);
                         campground.save();
-                        console.log('New comment');
-                    }
-                });
+                        log('New comment has been added successfully.', 'success');
+                    });
+                } catch (err) {
+                    log(`Adding comment has failed with error: ${err}`, 'error');
+                }
             }
         });
     });

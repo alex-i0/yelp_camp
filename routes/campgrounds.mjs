@@ -1,6 +1,7 @@
 import express from 'express';
 import Campground from '../models/campground.mjs';
 import middleware from '../middleware/index.mjs';
+import log from '../utils/log.mjs';
 
 const router = express.Router();
 
@@ -8,7 +9,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
     Campground.find({}, (err, allCampgrounds) => {
         if (err) {
-            console.log(err);
+            log(err, 'error');
         } else {
             res.render('campgrounds/index', { campgrounds: allCampgrounds });
         }
@@ -22,11 +23,11 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
         username: req.user.username
     };
 
-    let newCampground = { name, image, description, price, author };
+    const newCampground = { name, image, description, price, author };
 
     Campground.create(newCampground, (err, newlyCreated) => {
         if (err) {
-            console.log(err);
+            log(err, 'error');
         } else {
             res.redirect('/campgrounds');
         }
@@ -72,7 +73,7 @@ router.put('/:id', (req, res) => {
 router.delete('/:id', middleware.checkCampgroundOwnership, (req, res) => {
     Campground.findByIdAndRemove(req.params.id, (err) => {
         if (err) {
-            console.log(err);
+            log(err, 'error');
             res.redirect('/campgrounds');
         } else {
             res.redirect('/campgrounds');
