@@ -16,9 +16,9 @@ import seedDB from './seeds.js';
 import log from './utils/log.mjs';
 
 //requring routes
- import campgroundRoutes from './routes/campgrounds.js';
- import commentRoutes from './routes/comments.js';
- import indexRoutes from './routes/index.js';
+import campgroundRoutes from './routes/campgrounds.js';
+import commentRoutes from './routes/comments.js';
+import indexRoutes from './routes/index.js';
 
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -27,7 +27,7 @@ const url = process.env.DATABASEURL || 'mongodb://localhost/yelp_camp';
 mongoose.connect(url);
 //mongoose.connect('mongodb://admin:admin@ds219000.mlab.com:19000/yelpcamp_alex');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride('_method'));
@@ -35,11 +35,13 @@ app.use(flash());
 // seedDB(); seed the database
 
 //PASSPORT CONFIGURATION
-app.use(session({
-    secret: "KXhkBWAAmAXBrSsZ",
-    resave: false,
-    saveUninitialized: false
-}));
+app.use(
+    session({
+        secret: 'KXhkBWAAmAXBrSsZ',
+        resave: false,
+        saveUninitialized: false
+    })
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -55,15 +57,10 @@ app.use((req, res, next) => {
     next();
 });
 
-
-app.use('/' ,indexRoutes);
-app.use('/campgrounds' ,campgroundRoutes);
+app.use('/', indexRoutes);
+app.use('/campgrounds', campgroundRoutes);
 app.use('/campgrounds/:id/comments', commentRoutes);
 
-
-
-
-
 app.listen(4000, process.env.IP, () => {
-    log(`Server has started on port ${4000}`, 'success')
+    log(`Server has started on port ${4000}`, 'success');
 });

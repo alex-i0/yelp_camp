@@ -1,0 +1,8 @@
+{
+    "printWidth": 140,
+    "singleQuote": true,
+    "eslint.autoFixOnSave": true,
+    "tabWidth": 4,
+    "arrowParens": "always",
+    "trailingComma": "none"
+}

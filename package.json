@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.mjs",
-    "dev": "nodemon app.mjs"
+    "dev": "nodemon app.mjs",
+    "lint": "eslint ."
   },
   "author": "Aleksander Karp",
   "license": "ISC",
