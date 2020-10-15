@@ -1,6 +1,6 @@
-# yelp_camp
+# Kanata
 
-Yelp Camp is a complex web application based on MEN stack.
+Kanata is a complex web application based on MEN stack.
 
 To run application:
 

@@ -23,7 +23,7 @@ router.post('/register', (req, res) => {
             return res.render('register');
         }
         passport.authenticate('local')(req, res, () => {
-            req.flash('success', 'Welcome to KanataCamp ' + user.username);
+            req.flash('success', 'Welcome to Kanata ' + user.username);
             res.redirect('/campgrounds');
         });
     });
