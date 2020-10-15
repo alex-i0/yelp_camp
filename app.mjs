@@ -9,16 +9,16 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import session from 'express-session';
 
-import User from './models/user.js';
-import Campground from './models/campground.js';
-import Comment from './models/comment.js';
-import seedDB from './seeds.js';
+import User from './models/user.mjs';
+import Campground from './models/campground.mjs';
+import Comment from './models/comment.mjs';
+import seedDB from './seeds.mjs';
 import log from './utils/log.mjs';
 
 //requring routes
-import campgroundRoutes from './routes/campgrounds.js';
-import commentRoutes from './routes/comments.js';
-import indexRoutes from './routes/index.js';
+import campgroundRoutes from './routes/campgrounds.mjs';
+import commentRoutes from './routes/comments.mjs';
+import indexRoutes from './routes/index.mjs';
 
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));

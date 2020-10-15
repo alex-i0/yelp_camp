@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-var commentSchema = mongoose.Schema({
+const commentSchema = mongoose.Schema({
     text: String,
     author: {
-        id:{
+        id: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User'
         },
@@ -11,4 +11,4 @@ var commentSchema = mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("Comment", commentSchema);  
+export default mongoose.model('Comment', commentSchema);

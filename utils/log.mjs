@@ -2,8 +2,8 @@ import chalk from 'chalk';
 
 const log = (message, type) => {
     let consoleLogContent = null;
-    switch(type) {
-        case 'error': 
+    switch (type) {
+        case 'error':
             consoleLogContent = chalk.red(message);
             break;
         case 'success':
@@ -14,6 +14,6 @@ const log = (message, type) => {
             break;
     }
     return console.log(consoleLogContent);
-}
-  
-  export default log;
+};
+
+export default log;
