@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import User from '../models/user.mjs';
+import log from '../utils/log.mjs';
 
 const router = express.Router();
 
@@ -20,11 +21,13 @@ router.post('/register', (req, res) => {
     User.register(newUser, req.body.password, (err, user) => {
         if (err) {
             req.flash('error', err.message);
+            log(err.message, 'error');
             return res.render('register');
         }
         passport.authenticate('local')(req, res, () => {
             req.flash('success', 'Welcome to Kanata ' + user.username);
             res.redirect('/campgrounds');
+            log('Loged in successfully', 'info');
         });
     });
 });

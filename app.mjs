@@ -41,6 +41,8 @@ app.use(
     })
 );
 
+console.log(process.env.port);
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));

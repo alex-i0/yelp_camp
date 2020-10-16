@@ -6,9 +6,8 @@ import log from './log.mjs';
 const seedDB = () => {
     //Remove all existing campgrounds from database
     Campground.remove({}, (err) => {
-        if (err) {
-            log(err, 'error');
-        }
+        if (err) log(err, 'error');
+
         log('Campgrounds have been removed successfully.', 'success');
     });
     //Add campgrounds from defined data

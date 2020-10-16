@@ -1,6 +1,6 @@
-# Kanata
+# Camp.ca
 
-Kanata is a complex web application based on MEN stack.
+Camp.ca is a complex web application based on MEN stack.
 
 To run application:
 

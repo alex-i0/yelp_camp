@@ -1,11 +1,11 @@
 {
-    "name": "Kanata",
+    "name": "camp.ca",
     "version": "1.0.1",
     "description": "",
     "main": "app.js",
     "scripts": {
         "start": "node app.mjs",
-        "dev": "nodemon app.mjs",
+        "dev": "nodemon app.mjs port=5555",
         "lint": "eslint --ext .js --ext .mjs || true"
     },
     "author": "Aleksander Karp",

@@ -1,7 +1,8 @@
 import Campground from '../models/campground.mjs';
 import Comment from '../models/comment.mjs';
+import log from '../utils/log.mjs';
 
-const middlewareObj = {};
+let middlewareObj = {};
 
 middlewareObj.checkCampgroundOwnership = (req, res, next) => {
     if (req.isAuthenticated()) {
@@ -9,6 +10,7 @@ middlewareObj.checkCampgroundOwnership = (req, res, next) => {
             if (err) {
                 req.flash('error', 'Campground not found');
                 res.redirect('back');
+                log(err, 'error');
             } else {
                 if (foundCampground.author.id.equals(req.user._id)) {
                     next();
