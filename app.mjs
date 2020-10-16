@@ -23,7 +23,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const url = process.env.DATABASEURL || 'mongodb://localhost/yelp_camp';
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true });
-//mongoose.connect('mongodb://admin:admin@ds219000.mlab.com:19000/Kanata_alex');
+//mongoose.connect('mongodb://admin:admin@ds219000.mlab.com:19000/Camp.ca_alex');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
