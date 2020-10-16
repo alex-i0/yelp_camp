@@ -52,10 +52,9 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use((req, res, next) => {
     const { locals } = res;
-    const { user, flash } = req;
-    locals.currentUser = user;
-    locals.error = flash('error');
-    locals.success = flash('success');
+    locals.currentUser = req.user;
+    locals.error = req.flash('error');
+    locals.success = req.flash('success');
     next();
 });
 
