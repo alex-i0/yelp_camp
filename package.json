@@ -6,7 +6,7 @@
     "scripts": {
         "start": "node app.mjs",
         "dev": "nodemon app.mjs port=5555",
-        "lint": "eslint --ext .js --ext .mjs || true"
+        "lint": "eslint . --ext .js --ext .mjs"
     },
     "author": "Aleksander Karp",
     "license": "ISC",

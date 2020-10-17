@@ -6,7 +6,7 @@ const middlewareObj = {};
 
 middlewareObj.checkCampgroundOwnership = (req, res, next) => {
     try {
-        if (!req.isAuthenticated()) throw new Error('You need to be logged in to do that');
+        if (!req.isAuthenticated()) req.flash('error', 'You need to be logged in to do that');
 
         Campground.findById(req.params.id, (err, foundCampground) => {
             if (err) throw new Error('Campground not found');

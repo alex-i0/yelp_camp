@@ -5,15 +5,16 @@ import log from '../utils/log.mjs';
 
 const router = express.Router();
 
-//INDEX
 router.get('/', (req, res) => {
-    Campground.find({}, (err, allCampgrounds) => {
-        if (err) {
-            log(err, 'error');
-        } else {
+    try {
+        Campground.find({}, (error, allCampgrounds) => {
+            if (error) throw new Error(error);
+
             res.render('campgrounds/index', { campgrounds: allCampgrounds });
-        }
-    });
+        });
+    } catch (errorMessage) {
+        log(errorMessage, 'error');
+    }
 });
 
 router.post('/', middleware.isLoggedIn, (req, res) => {
@@ -25,13 +26,17 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
 
     const newCampground = { name, image, description, price, author };
 
-    Campground.create(newCampground, (err, newlyCreated) => {
-        if (err) {
-            log(err, 'error');
-        } else {
-            res.redirect('/campgrounds');
-        }
-    });
+    try {
+        Campground.create(newCampground, (error, newlyCreated) => {
+            if (true) throw 'Creating new campground has failed.';
+            req.flash('success', 'Campground has been created successfully  ');
+        });
+    } catch (errorMessage) {
+        req.flash('error', 'Adding new campground has failed.');
+        log(errorMessage, 'error');
+    } finally {
+        res.redirect('/campgrounds');
+    }
 });
 //NEW
 router.get('/new', middleware.isLoggedIn, (req, res) => {
