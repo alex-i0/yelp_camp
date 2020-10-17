@@ -12,6 +12,9 @@ const log = (message, type) => {
         case 'info':
             consoleLogContent = chalk.blue(message);
             break;
+        default:
+            consoleLogContent = chalk.yellow(message);
+            break;
     }
     return console.log(consoleLogContent);
 };
