@@ -2,16 +2,14 @@ import express from 'express';
 import Campground from '../models/campground.mjs';
 import middleware from '../middleware/index.mjs';
 import log from '../utils/log.mjs';
+import { getAllCampgrounds } from '../services/campgroundService.mjs';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        Campground.find({}, (error, allCampgrounds) => {
-            if (error) throw new Error(error);
-
-            res.render('campgrounds/index', { campgrounds: allCampgrounds });
-        });
+        const allCampgrounds = await getAllCampgrounds();
+        res.render('campgrounds/index', { campgrounds: allCampgrounds });
     } catch (errorMessage) {
         log(errorMessage, 'error');
     }
@@ -28,8 +26,8 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
 
     try {
         Campground.create(newCampground, (error, newlyCreated) => {
-            if (true) throw 'Creating new campground has failed.';
-            req.flash('success', 'Campground has been created successfully  ');
+            if (error) log('Creating new campground has failed.', 'error');
+            req.flash('success', 'Campground has been created successfully ');
         });
     } catch (errorMessage) {
         req.flash('error', 'Adding new campground has failed.');
@@ -59,6 +57,7 @@ router.get('/:id', (req, res) => {
 //EDIT
 router.get('/:id/edit', middleware.checkCampgroundOwnership, (req, res) => {
     Campground.findById(req.params.id, (err, foundCampground) => {
+        if (err) log(err, 'error');
         res.render('campgrounds/edit', { campground: foundCampground });
     });
 });
