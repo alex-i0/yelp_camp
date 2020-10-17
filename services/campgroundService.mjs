@@ -10,10 +10,11 @@ const getAllCampgrounds = async () => {
     return campgrounds;
 };
 
-const createCampground = (campgroundData) => {
-    Campground.create(campgroundData, (error, newlyCreated) => {
-        if (error) log('Creating new campground has failed.', 'error');
-        req.flash('success', 'Campground has been created successfully ');
+const createCampground = async (campgroundData) => {
+    await Campground.create(campgroundData, (error, newlyCreated) => {
+        if (error) {
+            log('Creating new campground has failed.', 'error');
+        }
     });
 };
 
