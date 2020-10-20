@@ -1,6 +1,6 @@
 import express from 'express';
 import Campground from '../models/campground.mjs';
-import middleware from '../middleware/index.mjs';
+import AuthService from '../services/authService.mjs';
 import log from '../utils/log.mjs';
 import { getAllCampgrounds, createCampground, deleteCampground } from '../services/campgroundService.mjs';
 
@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
     res.render('campgrounds/index', { campgrounds: fetchedCampgrounds });
 });
 
-router.post('/', middleware.isLoggedIn, async (req, res) => {
+router.post('/', AuthService.isLoggedIn, async (req, res) => {
     const { name, image, description, price } = req.body;
     const author = {
         id: req.user._id,
@@ -26,7 +26,7 @@ router.post('/', middleware.isLoggedIn, async (req, res) => {
     });
 });
 
-router.get('/new', middleware.isLoggedIn, (req, res) => {
+router.get('/new', AuthService.isLoggedIn, (req, res) => {
     res.render('campgrounds/new');
 });
 
@@ -44,7 +44,7 @@ router.get('/:id', (req, res) => {
 });
 
 //EDIT
-router.get('/:id/edit', middleware.checkCampgroundOwnership, (req, res) => {
+router.get('/:id/edit', AuthService.checkCampgroundOwnership, (req, res) => {
     Campground.findById(req.params.id, (err, foundCampground) => {
         if (err) log(err, 'error');
         res.render('campgrounds/edit', { campground: foundCampground });
@@ -65,7 +65,7 @@ router.put('/:id', (req, res) => {
 });
 
 //DELETE
-router.delete('/:id', middleware.checkCampgroundOwnership, async (req, res) => {
+router.delete('/:id', AuthService.checkCampgroundOwnership, async (req, res) => {
     await deleteCampground(req.params.id, () => {
         res.redirect('/campgrounds');
     });

@@ -2,9 +2,9 @@ import Campground from '../models/campground.mjs';
 import Comment from '../models/comment.mjs';
 import log from '../utils/log.mjs';
 
-const middlewareObj = {};
+const AuthService = {};
 
-middlewareObj.checkCampgroundOwnership = (req, res, next) => {
+AuthService.checkCampgroundOwnership = (req, res, next) => {
     try {
         if (!req.isAuthenticated()) req.flash('error', 'You need to be logged in to do that');
 
@@ -21,7 +21,7 @@ middlewareObj.checkCampgroundOwnership = (req, res, next) => {
     }
 };
 
-middlewareObj.checkCommentOwnership = (req, res, next) => {
+AuthService.checkCommentOwnership = (req, res, next) => {
     try {
         if (!req.isAuthenticated()) throw new Error('You need to be logged in to do that');
         Comment.findById(req.params.comment_id, (err, foundComment) => {
@@ -37,7 +37,7 @@ middlewareObj.checkCommentOwnership = (req, res, next) => {
     }
 };
 
-middlewareObj.isLoggedIn = (req, res, next) => {
+AuthService.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
         req.flash('error', 'You need to be logged in to do that');
         res.redirect('/login');
@@ -49,4 +49,4 @@ middlewareObj.isLoggedIn = (req, res, next) => {
     return next();
 };
 
-export default middlewareObj;
+export default AuthService;

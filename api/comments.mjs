@@ -2,13 +2,13 @@
 import express from 'express';
 import Campground from '../models/campground.mjs';
 import Comment from '../models/comment.mjs';
-import middleware from '../middleware/index.mjs';
+import AuthService from '../services/authService.mjs';
 import log from '../utils/log.mjs';
 
 const router = express.Router({ mergeParams: true });
 
 //Comment New
-router.get('/new', middleware.isLoggedIn, (req, res) => {
+router.get('/new', AuthService.isLoggedIn, (req, res) => {
     Campground.findById(req.params.id, (campgroundError, campground) => {
         if (campgroundError) {
             console.error(campgroundError);
@@ -19,7 +19,7 @@ router.get('/new', middleware.isLoggedIn, (req, res) => {
 });
 
 //Comment Create
-router.post('/', middleware.isLoggedIn, (req, res) => {
+router.post('/', AuthService.isLoggedIn, (req, res) => {
     Campground.findById(req.params.id, (err, campground) => {
         if (err) {
             log(err, 'error');
@@ -48,7 +48,7 @@ router.post('/', middleware.isLoggedIn, (req, res) => {
 
 //EDIT
 
-router.get('/:comment_id/edit', middleware.checkCommentOwnership, (req, res) => {
+router.get('/:comment_id/edit', AuthService.checkCommentOwnership, (req, res) => {
     Campground.findById(req.params.id, (err, foundCampground) => {
         if (err || !foundCampground) {
             req.flash('error', 'Campground not found');
@@ -67,7 +67,7 @@ router.get('/:comment_id/edit', middleware.checkCommentOwnership, (req, res) => 
 });
 
 //UPDATE
-router.put('/:comment_id', middleware.checkCommentOwnership, (req, res) => {
+router.put('/:comment_id', AuthService.checkCommentOwnership, (req, res) => {
     Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, (err, updatedComment) => {
         if (err) {
             log(err, 'error');
@@ -80,7 +80,7 @@ router.put('/:comment_id', middleware.checkCommentOwnership, (req, res) => {
 
 //DESTROY
 
-router.delete('/:comment_id', middleware.checkCommentOwnership, (req, res) => {
+router.delete('/:comment_id', AuthService.checkCommentOwnership, (req, res) => {
     Comment.findByIdAndRemove(req.params.comment_id, (err) => {
         if (err) {
             log(err, 'error');
