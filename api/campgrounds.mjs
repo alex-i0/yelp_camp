@@ -2,12 +2,12 @@ import express from 'express';
 import Campground from '../models/campground.mjs';
 import AuthService from '../services/authService.mjs';
 import log from '../utils/log.mjs';
-import { getAllCampgrounds, createCampground, deleteCampground } from '../services/campgroundService.mjs';
+import CampgroundService from '../services/campgroundService.mjs';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    const fetchedCampgrounds = await getAllCampgrounds();
+    const fetchedCampgrounds = await CampgroundService.getAllCampgrounds();
     res.render('campgrounds/index', { campgrounds: fetchedCampgrounds });
 });
 
@@ -20,10 +20,16 @@ router.post('/', AuthService.isLoggedIn, async (req, res) => {
 
     const newCampground = { name, image, description, price, author };
 
-    await createCampground(newCampground, () => {
+    try {
+        const newlyCreated = await CampgroundService.createCampground(newCampground);
+        console.log(newlyCreated);
+        if (!newlyCreated) throw new Error('Creating campground has failed.');
         req.flash('success', 'Campground has been created successfully.');
+    } catch (err) {
+        req.flash('error', err.message);
+    } finally {
         res.redirect('/campgrounds');
-    });
+    }
 });
 
 router.get('/new', AuthService.isLoggedIn, (req, res) => {

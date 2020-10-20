@@ -1,29 +1,23 @@
 import Campground from '../models/campground.mjs';
 import log from '../utils/log.mjs';
 
-const getAllCampgrounds = async () => {
-    let campgrounds = null;
-    Campground.find({}, (error, foundCampgrounds) => {
+const CampgroundService = {};
+
+CampgroundService.getAllCampgrounds = async () => {
+    const fetchedCampgrounds = await Campground.find({}, (error, foundCampgrounds) => {
         if (error) log(error, 'error');
-        campgrounds = Array.isArray(foundCampgrounds) ? foundCampgrounds : [];
+        return Array.isArray(foundCampgrounds) ? foundCampgrounds : [];
     });
-    return campgrounds;
+    return fetchedCampgrounds;
 };
 
-const createCampground = async (campgroundData, callback) => {
-    await Campground.create(campgroundData, (error, newlyCreated) => {
-        if (error) {
-            log('Creating new campground has failed.', 'error');
-        }
-
-        if (!error && newlyCreated) {
-            return callback();
-        }
-    });
+CampgroundService.createCampground = async (campgroundData) => {
+    const createdCampground = await Campground.create(campgroundData);
+    return createdCampground;
 };
 
-const getCampgroundWithID = (id) => {
-    Campground.findById(id)
+CampgroundService.getCampgroundWithID = async (id) => {
+    await Campground.findById(id)
         .populate('comments')
         .exec((err, foundCampground) => {
             if (err || !foundCampground) {
@@ -36,7 +30,7 @@ const getCampgroundWithID = (id) => {
 };
 
 //EDIT
-const editCampground = (id) => {
+CampgroundService.editCampground = (id) => {
     Campground.findById(id, (err, foundCampground) => {
         if (err) log(err, 'error');
         res.render('campgrounds/edit', { campground: foundCampground });
@@ -44,7 +38,7 @@ const editCampground = (id) => {
 };
 
 //UPDATE
-const updateCampground = (id, campgroundData) => {
+CampgroundService.updateCampground = (id, campgroundData) => {
     Campground.findByIdAndUpdate(id, campgroundData, (err, updatedCampground) => {
         if (err) {
             res.redirect('/campgrounds');
@@ -55,7 +49,7 @@ const updateCampground = (id, campgroundData) => {
 };
 
 //DELETE
-const deleteCampground = async (id, callback) => {
+CampgroundService.deleteCampground = async (id, callback) => {
     await Campground.findByIdAndRemove(id, (err) => {
         if (err) {
             routeErrorHandler(err, res, redirectRoute);
@@ -64,4 +58,4 @@ const deleteCampground = async (id, callback) => {
     return callback();
 };
 
-export { getAllCampgrounds, createCampground, getCampgroundWithID, editCampground, updateCampground, deleteCampground };
+export default CampgroundService;
