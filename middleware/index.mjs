@@ -38,13 +38,15 @@ middlewareObj.checkCommentOwnership = (req, res, next) => {
 };
 
 middlewareObj.isLoggedIn = (req, res, next) => {
-    if (req.isAuthenticated()) return next();
-
     if (!req.isAuthenticated()) {
         req.flash('error', 'You need to be logged in to do that');
         res.redirect('/login');
         log('You need to be logged in to do this acction.', 'info');
+
+        return null;
     }
+
+    return next();
 };
 
 export default middlewareObj;

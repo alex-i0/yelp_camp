@@ -3,17 +3,21 @@ import log from '../utils/log.mjs';
 
 const getAllCampgrounds = async () => {
     let campgrounds = null;
-    await Campground.find({}, (error, allCampgrounds) => {
+    Campground.find({}, (error, foundCampgrounds) => {
         if (error) log(error, 'error');
-        campgrounds = allCampgrounds;
+        campgrounds = Array.isArray(foundCampgrounds) ? foundCampgrounds : [];
     });
     return campgrounds;
 };
 
-const createCampground = async (campgroundData) => {
+const createCampground = async (campgroundData, callback) => {
     await Campground.create(campgroundData, (error, newlyCreated) => {
         if (error) {
             log('Creating new campground has failed.', 'error');
+        }
+
+        if (!error && newlyCreated) {
+            return callback();
         }
     });
 };
@@ -51,15 +55,13 @@ const updateCampground = (id, campgroundData) => {
 };
 
 //DELETE
-const deleteCampground = (id) => {
-    Campground.findByIdAndRemove(id, (err) => {
+const deleteCampground = async (id, callback) => {
+    await Campground.findByIdAndRemove(id, (err) => {
         if (err) {
-            log('Campground not found', 'error');
-            res.redirect('/campgrounds');
-        } else {
-            res.redirect('/campgrounds');
+            routeErrorHandler(err, res, redirectRoute);
         }
     });
+    return callback();
 };
 
 export { getAllCampgrounds, createCampground, getCampgroundWithID, editCampground, updateCampground, deleteCampground };

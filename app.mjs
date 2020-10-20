@@ -6,20 +6,21 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
-import seedDB from './seeds.mjs';
+import seedDB from './utils/seeds.mjs';
 import log from './utils/log.mjs';
 
-import campgroundRoutes from './routes/campgrounds.mjs';
-import commentRoutes from './routes/comments.mjs';
-import indexRoutes from './routes/index.mjs';
+import campgroundRoutes from './api/campgrounds.mjs';
+import commentRoutes from './api/comments.mjs';
+import indexRoutes from './api/index.mjs';
 import mongooseInitialize from './config/db.mjs';
 import passportInitialize from './config/passport.mjs';
 
 dotenv.config();
+
+const PORT = process.env.PORT;
+
 const app = express();
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
-const PORT = process.env.PORT || 4444;
 mongooseInitialize();
 passportInitialize(app);
 

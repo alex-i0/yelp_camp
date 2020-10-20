@@ -2,17 +2,13 @@ import express from 'express';
 import Campground from '../models/campground.mjs';
 import middleware from '../middleware/index.mjs';
 import log from '../utils/log.mjs';
-import { getAllCampgrounds, createCampground } from '../services/campgroundService.mjs';
+import { getAllCampgrounds, createCampground, deleteCampground } from '../services/campgroundService.mjs';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-    try {
-        const allCampgrounds = await getAllCampgrounds();
-        res.render('campgrounds/index', { campgrounds: allCampgrounds });
-    } catch (errorMessage) {
-        log(errorMessage, 'error');
-    }
+    const fetchedCampgrounds = await getAllCampgrounds();
+    res.render('campgrounds/index', { campgrounds: fetchedCampgrounds });
 });
 
 router.post('/', middleware.isLoggedIn, async (req, res) => {
@@ -24,9 +20,10 @@ router.post('/', middleware.isLoggedIn, async (req, res) => {
 
     const newCampground = { name, image, description, price, author };
 
-    await createCampground(newCampground);
-    req.flash('success', 'Campground has been created successfully.');
-    res.redirect('/campgrounds');
+    await createCampground(newCampground, () => {
+        req.flash('success', 'Campground has been created successfully.');
+        res.redirect('/campgrounds');
+    });
 });
 
 router.get('/new', middleware.isLoggedIn, (req, res) => {
@@ -52,6 +49,8 @@ router.get('/:id/edit', middleware.checkCampgroundOwnership, (req, res) => {
         if (err) log(err, 'error');
         res.render('campgrounds/edit', { campground: foundCampground });
     });
+
+    res.render('campgrounds/edit', { campground: foundCampground });
 });
 
 //UPDATE
@@ -66,14 +65,9 @@ router.put('/:id', (req, res) => {
 });
 
 //DELETE
-router.delete('/:id', middleware.checkCampgroundOwnership, (req, res) => {
-    Campground.findByIdAndRemove(req.params.id, (err) => {
-        if (err) {
-            log('Campground not found', 'error');
-            res.redirect('/campgrounds');
-        } else {
-            res.redirect('/campgrounds');
-        }
+router.delete('/:id', middleware.checkCampgroundOwnership, async (req, res) => {
+    await deleteCampground(req.params.id, () => {
+        res.redirect('/campgrounds');
     });
 });
 
