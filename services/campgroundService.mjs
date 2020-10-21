@@ -12,7 +12,9 @@ CampgroundService.getAllCampgrounds = async () => {
 };
 
 CampgroundService.createCampground = async (campgroundData) => {
-    const createdCampground = await Campground.create(campgroundData);
+    const createdCampground = await Campground.create(campgroundData, (error, newlyCreatedCampground) => {
+        if (error) log(error, 'error');
+    });
     return createdCampground;
 };
 

@@ -20,16 +20,9 @@ router.post('/', AuthService.isLoggedIn, async (req, res) => {
 
     const newCampground = { name, image, description, price, author };
 
-    try {
-        const newlyCreated = await CampgroundService.createCampground(newCampground);
-        console.log(newlyCreated);
-        if (!newlyCreated) throw new Error('Creating campground has failed.');
-        req.flash('success', 'Campground has been created successfully.');
-    } catch (err) {
-        req.flash('error', err.message);
-    } finally {
-        res.redirect('/campgrounds');
-    }
+    await CampgroundService.createCampground(newCampground);
+    req.flash('success', 'Campground has been created successfully.');
+    res.redirect('/campgrounds');
 });
 
 router.get('/new', AuthService.isLoggedIn, (req, res) => {
@@ -43,10 +36,11 @@ router.get('/:id', (req, res) => {
             if (err || !foundCampground) {
                 req.flash('error', 'Campground not found');
                 res.redirect('back');
-            } else {
-                res.render('campgrounds/show', { campground: foundCampground });
             }
+
+            return foundCampground;
         });
+    res.render('campgrounds/show', { campground: foundCampground });
 });
 
 //EDIT
